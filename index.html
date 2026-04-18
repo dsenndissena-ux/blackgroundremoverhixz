@@ -17,10 +17,12 @@
       --accent: #18181b;
       --accent-hover: #27272a;
       --accent-light: #f4f4f5;
-      --brand: #18181b; /* Pro Black */
+      --brand: #18181b;
       --border: #e4e4e7;
       --success: #059669;
       --error: #dc2626;
+      --donate: #FFDD00;
+      --donate-hover: #FFCC00;
       --shadow: 0 4px 15px rgba(0,0,0,0.05);
       --shadow-hover: 0 10px 25px rgba(0,0,0,0.08);
       --radius: 14px;
@@ -52,6 +54,7 @@
       position: sticky;
       top: 0;
       z-index: 20;
+      gap: 1rem;
     }
 
     .logo {
@@ -72,6 +75,55 @@
       background-clip: text;
       color: transparent;
     }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .donate-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--donate);
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: var(--transition);
+      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(255, 221, 0, 0.25);
+    }
+    .donate-btn:hover {
+      background: var(--donate-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 221, 0, 0.35);
+    }
+    .donate-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .status-badge.success { background: #ecfdf5; color: #059669; border-color: #d1fae5; }
+    .status-badge.error { background: #fef2f2; color: #dc2626; border-color: #fee2e2; }
 
     .container {
       flex: 1;
@@ -271,23 +323,6 @@
     .btn-success:hover:not(:disabled) { background: #047857; }
     .action-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.3rem 0.65rem;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
-    .status-badge.success { background: #ecfdf5; color: #059669; border-color: #d1fae5; }
-    .status-badge.error { background: #fef2f2; color: #dc2626; border-color: #fee2e2; }
-
     .bg-section { display: flex; flex-direction: column; gap: 0.75rem; }
     .bg-tabs { display: flex; gap: 4px; background: var(--bg-secondary); padding: 3px; border-radius: 8px; }
     .bg-tab {
@@ -356,7 +391,9 @@
 
     @media (max-width: 1000px) {
       .workspace { grid-template-columns: 1fr; }
-      .steps-indicator { display: none; } /* Hide steps on mobile for cleaner UI */
+      .steps-indicator { display: none; }
+      .header-actions { flex-direction: column; gap: 0.5rem; align-items: flex-end; }
+      .donate-btn { font-size: 0.75rem; padding: 0.4rem 0.8rem; }
     }
   </style>
 </head>
@@ -367,7 +404,14 @@
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
       Hiruz<span style="color: #71717a;">Blackground Remover</span>
     </div>
-    <div class="status-badge" id="status-badge">Ready</div>
+    
+    <div class="header-actions">
+      <a href="https://buymeacoffee.com/soulrestaudio" target="_blank" rel="noopener noreferrer" class="donate-btn" title="Support this project">
+        <svg viewBox="0 0 24 24"><path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.93 0 3.5-1.57 3.5-3.5S20.43 3 18.5 3zM16 8.99c0 2.2-1.8 3.99-3.99 3.99-2.2 0-4-1.8-4-4V5h8v3.99zm2.5-1.99h-1v-2h1c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5zM7 15v2h2v-2H7zm0 4v2h2v-2H7zm4-4v2h2v-2h-2zm0 4v2h2v-2h-2zm4-4v2h2v-2h-2zm0 4v2h2v-2h-2z"/></svg>
+        <span>Buy me a coffee</span>
+      </a>
+      <div class="status-badge" id="status-badge">Ready</div>
+    </div>
   </header>
 
   <div class="container">
