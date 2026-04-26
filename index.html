@@ -133,6 +133,7 @@
       width: 100%;
       position: relative;
       z-index: 1;
+      overflow-x: auto; /* Allow horizontal scroll on small screens */
     }
 
     .steps-indicator {
@@ -191,6 +192,7 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      min-width: 300px; /* Prevent collapse on small screens */
     }
     .upload-zone:hover, .upload-zone.drag-over {
       border-color: var(--accent);
@@ -221,6 +223,7 @@
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
       display: none;
+      min-width: 300px;
     }
     .preview-header {
       display: flex;
@@ -242,6 +245,7 @@
       align-items: center;
       justify-content: center;
       border: 1px solid var(--border);
+      min-height: 300px;
     }
     .canvas-container::before {
       content: '';
@@ -296,6 +300,7 @@
       padding: 1.25rem;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
+      min-width: 280px;
     }
     .panel h3 { font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
     .panel p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
@@ -314,6 +319,7 @@
       gap: 0.5rem;
       font-family: inherit;
       font-size: 0.9rem;
+      min-height: 44px; /* Touch-friendly */
     }
     .btn-primary { background: var(--accent); color: white; }
     .btn-primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
@@ -337,6 +343,7 @@
       cursor: pointer;
       transition: var(--transition);
       font-family: inherit;
+      min-height: 36px;
     }
     .bg-tab.active { background: white; color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
@@ -359,6 +366,7 @@
       transition: var(--transition);
       border: 2px solid transparent;
       overflow: hidden;
+      min-width: 50px;
     }
     .bg-option:hover { box-shadow: var(--shadow); }
     .bg-option.selected { border-color: var(--accent); }
@@ -389,11 +397,17 @@
 
     .hidden { display: none !important; }
 
-    @media (max-width: 1000px) {
-      .workspace { grid-template-columns: 1fr; }
-      .steps-indicator { display: none; }
-      .header-actions { flex-direction: column; gap: 0.5rem; align-items: flex-end; }
-      .donate-btn { font-size: 0.75rem; padding: 0.4rem 0.8rem; }
+    /* 🔥 FORCE DESKTOP LAYOUT ON ALL DEVICES */
+    .workspace { grid-template-columns: 1fr 320px !important; }
+    .steps-indicator { display: flex !important; }
+    .header-actions { 
+      flex-direction: row !important; 
+      align-items: center !important; 
+      gap: 0.75rem !important; 
+    }
+    .donate-btn { 
+      font-size: 0.85rem !important; 
+      padding: 0.5rem 1rem !important; 
     }
   </style>
 </head>
