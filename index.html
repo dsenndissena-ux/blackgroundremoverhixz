@@ -16,7 +16,6 @@
       --text-secondary: #71717a;
       --accent: #18181b;
       --accent-hover: #27272a;
-      --accent-light: #f4f4f5;
       --brand: #18181b;
       --border: #e4e4e7;
       --success: #059669;
@@ -28,6 +27,7 @@
       --radius: 14px;
       --radius-sm: 10px;
       --transition: all 0.2s ease-out;
+      --layout-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,6 +41,7 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      transition: var(--layout-transition);
     }
 
     header {
@@ -55,6 +56,7 @@
       top: 0;
       z-index: 20;
       gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .logo {
@@ -74,6 +76,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
     .donate-btn {
@@ -91,14 +94,38 @@
       border: 1px solid rgba(0,0,0,0.1);
       box-shadow: 0 2px 8px rgba(255, 221, 0, 0.25);
     }
-    .donate-btn:hover {
-      background: var(--donate-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(255, 221, 0, 0.35);
-    }
+    .donate-btn:hover { background: var(--donate-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 221, 0, 0.35); }
     .donate-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-    /* 🔥 REAL-TIME VISITOR COUNTER STYLES */
+    /* 🔀 LAYOUT TOGGLE SWITCHES */
+    .layout-switch {
+      display: inline-flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .switch-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.75rem;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .switch-btn:hover:not(.active) { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+    .switch-btn.active { background: white; color: var(--text-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+
+    /* 📊 REAL-TIME VISITOR COUNTER */
     .visitor-counter {
       display: flex;
       align-items: center;
@@ -114,17 +141,8 @@
       white-space: nowrap;
     }
     .visitor-counter:hover { box-shadow: var(--shadow-hover); }
-    .counter-pulse {
-      width: 8px; height: 8px;
-      background: var(--success);
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgba(5, 150, 105, 0.4);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
+    .counter-pulse { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 6px rgba(5, 150, 105, 0.4); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
     .counter-value { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
     .counter-label { color: var(--text-secondary); font-weight: 500; }
 
@@ -153,7 +171,7 @@
       width: 100%;
       position: relative;
       z-index: 1;
-      overflow-x: auto;
+      transition: padding var(--layout-transition);
     }
 
     .steps-indicator {
@@ -168,6 +186,7 @@
       padding: 6px 12px;
       border-radius: 50px;
       border: 1px solid var(--border);
+      transition: opacity var(--layout-transition), transform var(--layout-transition);
     }
     .step {
       display: flex;
@@ -182,24 +201,15 @@
     }
     .step.active { background: white; color: var(--text-primary); font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
     .step.completed { color: var(--success); }
-    .step-num {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; }
     .step.active .step-num { background: var(--text-primary); color: white; border-color: var(--text-primary); }
     .step.completed .step-num { background: var(--success); color: white; border-color: var(--success); }
 
     .workspace {
       display: grid;
-      grid-template-columns: 1fr 320px;
       gap: 2rem;
       align-items: start;
+      transition: grid-template-columns var(--layout-transition), gap var(--layout-transition);
     }
 
     .upload-zone {
@@ -209,31 +219,15 @@
       text-align: center;
       background: var(--bg-card);
       cursor: pointer;
-      transition: var(--transition);
+      transition: var(--transition), padding var(--layout-transition);
       position: relative;
       overflow: hidden;
-      min-width: 300px;
     }
-    .upload-zone:hover, .upload-zone.drag-over {
-      border-color: var(--accent);
-      background: var(--bg-secondary);
-      box-shadow: var(--shadow-hover);
-    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: var(--bg-secondary); box-shadow: var(--shadow-hover); }
     .upload-zone svg { width: 52px; height: 52px; margin-bottom: 1rem; color: var(--text-secondary); opacity: 0.7; }
     .upload-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
     .upload-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; }
-    .upload-btn {
-      background: var(--accent);
-      color: white;
-      padding: 0.8rem 1.8rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      font-family: inherit;
-      font-size: 0.95rem;
-    }
+    .upload-btn { background: var(--accent); color: white; padding: 0.8rem 1.8rem; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; font-size: 0.95rem; }
     .upload-btn:hover { background: var(--accent-hover); }
 
     .preview-area {
@@ -243,14 +237,9 @@
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
       display: none;
-      min-width: 300px;
+      transition: var(--transition);
     }
-    .preview-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0.5rem;
-    }
+    .preview-header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0.5rem; }
     .preview-header h2 { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
     #file-name { color: var(--text-secondary); font-size: 0.8rem; font-weight: 400; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
@@ -265,82 +254,29 @@
       align-items: center;
       justify-content: center;
       border: 1px solid var(--border);
-      min-height: 300px;
+      transition: min-height var(--layout-transition), aspect-ratio var(--layout-transition);
     }
     .canvas-container::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: linear-gradient(45deg, #f4f4f5 25%, transparent 25%), 
-                        linear-gradient(-45deg, #f4f4f5 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #f4f4f5 75%), 
-                        linear-gradient(-45deg, transparent 75%, #f4f4f5 75%);
-      background-size: 16px 16px;
-      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-      opacity: 0.8;
-      z-index: 0;
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(45deg, #f4f4f5 25%, transparent 25%), linear-gradient(-45deg, #f4f4f5 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f4f4f5 75%), linear-gradient(-45deg, transparent 75%, #f4f4f5 75%);
+      background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      opacity: 0.8; z-index: 0;
     }
-
-    #preview-img, #composite-canvas {
-      position: relative;
-      z-index: 1;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: var(--radius-sm);
-    }
+    #preview-img, #composite-canvas { position: relative; z-index: 1; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius-sm); }
     #composite-canvas { display: none; }
 
     .loader {
-      position: absolute;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-      background: white;
-      padding: 1rem 1.5rem;
-      border-radius: var(--radius-sm);
-      z-index: 5;
-      box-shadow: var(--shadow-hover);
-      border: 1px solid var(--border);
+      position: absolute; display: none; flex-direction: column; align-items: center; gap: 0.75rem; background: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); z-index: 5; box-shadow: var(--shadow-hover); border: 1px solid var(--border);
     }
-    .spinner {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--bg-secondary);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-    }
+    .spinner { width: 20px; height: 20px; border: 2px solid var(--bg-secondary); border-top-color: var(--accent); border-radius: 50%; }
     .loader-text { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); }
 
-    .controls { display: flex; flex-direction: column; gap: 1rem; }
-    .panel {
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      min-width: 280px;
-    }
+    .controls { display: flex; flex-direction: column; gap: 1rem; transition: min-width var(--layout-transition); }
+    .panel { background: var(--bg-card); border-radius: var(--radius); padding: 1.25rem; border: 1px solid var(--border); box-shadow: var(--shadow); transition: padding var(--layout-transition), min-width var(--layout-transition); }
     .panel h3 { font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
     .panel p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
 
-    .action-btn {
-      width: 100%;
-      padding: 0.85rem;
-      border: none;
-      border-radius: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-family: inherit;
-      font-size: 0.9rem;
-      min-height: 44px;
-    }
+    .action-btn { width: 100%; padding: 0.85rem; border: none; border-radius: 10px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-family: inherit; font-size: 0.9rem; min-height: 44px; }
     .btn-primary { background: var(--accent); color: white; }
     .btn-primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
     .btn-secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border); }
@@ -351,90 +287,49 @@
 
     .bg-section { display: flex; flex-direction: column; gap: 0.75rem; }
     .bg-tabs { display: flex; gap: 4px; background: var(--bg-secondary); padding: 3px; border-radius: 8px; }
-    .bg-tab {
-      flex: 1;
-      padding: 0.45rem;
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      border-radius: 5px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      font-family: inherit;
-      min-height: 36px;
-    }
+    .bg-tab { flex: 1; padding: 0.45rem; background: transparent; border: none; color: var(--text-secondary); border-radius: 5px; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; min-height: 36px; }
     .bg-tab.active { background: white; color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
-    .bg-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
-      max-height: 280px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
+    .bg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; max-height: 280px; overflow-y: auto; padding-right: 2px; }
     .bg-grid::-webkit-scrollbar { width: 3px; }
     .bg-grid::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
 
-    .bg-option {
-      aspect-ratio: 1;
-      border-radius: 8px;
-      cursor: pointer;
-      position: relative;
-      transition: var(--transition);
-      border: 2px solid transparent;
-      overflow: hidden;
-      min-width: 50px;
-    }
+    .bg-option { aspect-ratio: 1; border-radius: 8px; cursor: pointer; position: relative; transition: var(--transition); border: 2px solid transparent; overflow: hidden; min-width: 50px; }
     .bg-option:hover { box-shadow: var(--shadow); }
     .bg-option.selected { border-color: var(--accent); }
-    .bg-option.selected::after {
-      content: '✓';
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.4);
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 600;
-      backdrop-filter: blur(2px);
-    }
-    .bg-name {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 2px;
-      font-size: 0.55rem;
-      text-align: center;
-      background: rgba(255,255,255,0.9);
-      color: var(--text-primary);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
+    .bg-option.selected::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); color: white; font-size: 1.1rem; font-weight: 600; backdrop-filter: blur(2px); }
+    .bg-name { position: absolute; bottom: 0; left: 0; right: 0; padding: 2px; font-size: 0.55rem; text-align: center; background: rgba(255,255,255,0.9); color: var(--text-primary); font-weight: 500; letter-spacing: -0.01em; }
 
     .hidden { display: none !important; }
 
-    /* 🔥 FORCE DESKTOP LAYOUT ON ALL DEVICES */
-    .workspace { grid-template-columns: 1fr 320px !important; }
-    .steps-indicator { display: flex !important; }
-    .header-actions { 
-      flex-direction: row !important; 
-      align-items: center !important; 
-      gap: 0.75rem !important; 
-      flex-wrap: wrap;
-    }
-    .donate-btn { font-size: 0.85rem !important; padding: 0.5rem 1rem !important; }
+    /* 💻 LAPTOP MODE (DEFAULT) */
+    .mode-laptop .workspace { grid-template-columns: 1fr 320px; }
+    .mode-laptop .steps-indicator { display: flex; opacity: 1; transform: translateY(0); }
+    .mode-laptop .container { padding: 2rem 1.5rem; }
+    .mode-laptop .upload-zone { padding: 3.5rem 2rem; min-width: 300px; }
+    .mode-laptop .canvas-container { min-height: 300px; aspect-ratio: 16/10; }
+    .mode-laptop .controls { min-width: 280px; }
+    .mode-laptop .panel { min-width: 280px; }
 
-    @media (max-width: 900px) {
-      .header-actions { gap: 0.5rem; }
-      .counter-label { display: none; }
+    /* 📱 MOBILE MODE */
+    .mode-mobile .workspace { grid-template-columns: 1fr; gap: 1.25rem; }
+    .mode-mobile .steps-indicator { display: none; opacity: 0; transform: translateY(-10px); }
+    .mode-mobile .header-actions { flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .mode-mobile .container { padding: 1rem; }
+    .mode-mobile .upload-zone { padding: 2rem 1rem; min-width: unset; }
+    .mode-mobile .canvas-container { min-height: 250px; aspect-ratio: 4/3; }
+    .mode-mobile .controls { min-width: unset; width: 100%; }
+    .mode-mobile .panel { min-width: unset; padding: 1rem; }
+    .mode-mobile .counter-label { display: none; }
+
+    /* Responsive fallback for very narrow screens */
+    @media (max-width: 640px) {
+      .layout-switch { width: 100%; justify-content: center; margin-top: 0.5rem; }
+      .switch-btn { flex: 1; justify-content: center; }
     }
   </style>
 </head>
-<body>
+<body class="mode-laptop">
 
   <header>
     <div class="logo">
@@ -448,8 +343,14 @@
         <span>Buy me a coffee</span>
       </a>
 
-      <!-- 🔥 REAL-TIME VISITOR COUNTER -->
-      <div class="visitor-counter" title="Visitors online & total">
+      <!-- 🔀 LAYOUT SWITCHES -->
+      <div class="layout-switch" id="layout-switch">
+        <button class="switch-btn active" data-mode="laptop">💻 Laptop</button>
+        <button class="switch-btn" data-mode="mobile">📱 Mobile</button>
+      </div>
+
+      <!-- 📊 VISITOR COUNTER -->
+      <div class="visitor-counter" title="Live Visitors & Total Visits">
         <span class="counter-pulse"></span>
         <span class="counter-value" id="live-count">--</span>
         <span class="counter-label">online</span>
@@ -502,9 +403,7 @@
           <p>Select a high-resolution photo for optimal processing.</p>
         </div>
 
-        <button class="action-btn btn-primary" id="process-btn" disabled>
-          Remove Blackground
-        </button>
+        <button class="action-btn btn-primary" id="process-btn" disabled>Remove Blackground</button>
 
         <div class="panel hidden" id="bg-picker">
           <div class="bg-section">
@@ -521,49 +420,56 @@
           </div>
         </div>
 
-        <button class="action-btn btn-success" id="download-btn" disabled>
-          Download Export
-        </button>
-
-        <button class="action-btn btn-secondary" id="reset-btn" style="display: none;">
-          Reset Workspace
-        </button>
+        <button class="action-btn btn-success" id="download-btn" disabled>Download Export</button>
+        <button class="action-btn btn-secondary" id="reset-btn" style="display: none;">Reset Workspace</button>
       </aside>
     </div>
   </div>
 
   <script>
-    // 🔥 REAL-TIME VISITOR COUNTER (Zero-config, works immediately)
+    /* 🔀 LAYOUT SWITCHER LOGIC */
+    (function() {
+      const switchEl = document.getElementById('layout-switch');
+      const buttons = switchEl.querySelectorAll('.switch-btn');
+      const body = document.body;
+
+      // Load saved preference or default to laptop
+      const savedMode = localStorage.getItem('hiruz_layout_mode') || 'laptop';
+      setLayoutMode(savedMode);
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => setLayoutMode(btn.dataset.mode));
+      });
+
+      function setLayoutMode(mode) {
+        body.classList.remove('mode-laptop', 'mode-mobile');
+        body.classList.add(`mode-${mode}`);
+        localStorage.setItem('hiruz_layout_mode', mode);
+        buttons.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+      }
+    })();
+
+    /* 📊 VISITOR COUNTER LOGIC */
     (function() {
       const liveEl = document.getElementById('live-count');
       const totalEl = document.getElementById('total-count');
-      
-      // Unique session ID (persists for tab session)
       let sessionId = sessionStorage.getItem('sv_sid');
-      if (!sessionId) {
-        sessionId = 's_' + Math.random().toString(36).substr(2, 9) + Date.now();
-        sessionStorage.setItem('sv_sid', sessionId);
-      }
+      if (!sessionId) { sessionId = 's_' + Math.random().toString(36).substr(2, 9) + Date.now(); sessionStorage.setItem('sv_sid', sessionId); }
 
-      // Track total visits (free public API)
       async function updateTotalVisits() {
         try {
           const res = await fetch('https://api.countapi.xyz/hit/hiruz-bg-remover/visits');
           const data = await res.json();
           totalEl.textContent = (data.value || 0).toLocaleString();
         } catch {
-          // Fallback: local count
           let local = parseInt(localStorage.getItem('sv_local_visits') || '0') + 1;
           localStorage.setItem('sv_local_visits', local);
           totalEl.textContent = local.toLocaleString();
         }
       }
 
-      // Simulate live online count (updates every 10s)
-      // For production: replace with Firebase Realtime DB or WebSocket
       let simulatedOnline = 1;
       function updateLiveCount() {
-        // Fluctuates realistically between 1-15 for demo
         simulatedOnline = Math.max(1, simulatedOnline + Math.floor(Math.random() * 3) - 1);
         if (simulatedOnline > 15) simulatedOnline = Math.floor(Math.random() * 5) + 1;
         liveEl.textContent = simulatedOnline;
@@ -571,18 +477,14 @@
 
       updateTotalVisits();
       updateLiveCount();
-      
-      setInterval(updateTotalVisits, 30000); // Refresh total every 30s
-      setInterval(updateLiveCount, 10000);   // Update live indicator every 10s
+      setInterval(updateTotalVisits, 30000);
+      setInterval(updateLiveCount, 10000);
 
-      // Register heartbeat to keep session "alive"
-      const beat = setInterval(() => {
-        fetch('https://api.countapi.xyz/value/hiruz-bg-remover/online?amount=1');
-      }, 15000);
+      const beat = setInterval(() => fetch('https://api.countapi.xyz/value/hiruz-bg-remover/online?amount=1'), 15000);
       window.addEventListener('beforeunload', () => clearInterval(beat));
     })();
 
-    // 🔹 YOUR EXISTING SCRIPT (Unchanged)
+    /* 🎨 MAIN APP LOGIC */
     let currentFile = null;
     let foregroundImage = null;
     let selectedBgType = 'none';
@@ -605,8 +507,7 @@
     const ctx = compositeCanvas.getContext('2d');
 
     uploadZone.addEventListener('click', () => fileInput.click());
-    ['dragenter','dragover','dragleave','drop'].forEach(e => uploadZone.addEventListener(e, preventDefaults));
-    function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+    ['dragenter','dragover','dragleave','drop'].forEach(e => uploadZone.addEventListener(e, e => { e.preventDefault(); e.stopPropagation(); }));
     ['dragenter','dragover'].forEach(e => uploadZone.addEventListener(e, () => uploadZone.classList.add('drag-over')));
     ['dragleave','drop'].forEach(e => uploadZone.addEventListener(e, () => uploadZone.classList.remove('drag-over')));
     uploadZone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
@@ -630,12 +531,10 @@
       const file = files[0];
       if (!file.type.startsWith('image/')) { alert('Please upload a valid image.'); return; }
       if (file.size > 10 * 1024 * 1024) { alert('Max file size 10MB.'); return; }
-      
       currentFile = file;
       fileNameDisplay.textContent = file.name;
       uploadZone.classList.add('hidden');
       previewArea.style.display = 'block';
-      
       const reader = new FileReader();
       reader.onload = e => {
         previewImg.src = e.target.result;
@@ -663,7 +562,6 @@
           body: formData
         });
         if (!res.ok) throw new Error((await res.json()).errors?.[0]?.title || 'API Failed');
-        
         const blob = await res.blob();
         foregroundImage = new Image();
         foregroundImage.onload = () => {
@@ -689,28 +587,20 @@
 
     const backgrounds = {
       colors: [
-        { name: 'None', type: 'none', value: null }, { name: 'White', value: '#ffffff' },
-        { name: 'Black', value: '#111111' }, { name: 'Gray', value: '#d4d4d8' },
-        { name: 'Beige', value: '#f5f5dc' }, { name: 'Navy', value: '#0f172a' },
-        { name: 'Red', value: '#ef4444' }, { name: 'Teal', value: '#14b8a6' },
-        { name: 'Purple', value: '#8b5cf6' }, { name: 'Pink', value: '#f43f5e' },
-        { name: 'Blue', value: '#3b82f6' }, { name: 'Gold', value: '#eab308' }
+        { name: 'None', type: 'none', value: null }, { name: 'White', value: '#ffffff' }, { name: 'Black', value: '#111111' }, { name: 'Gray', value: '#d4d4d8' },
+        { name: 'Beige', value: '#f5f5dc' }, { name: 'Navy', value: '#0f172a' }, { name: 'Red', value: '#ef4444' }, { name: 'Teal', value: '#14b8a6' },
+        { name: 'Purple', value: '#8b5cf6' }, { name: 'Pink', value: '#f43f5e' }, { name: 'Blue', value: '#3b82f6' }, { name: 'Gold', value: '#eab308' }
       ],
       gradients: [
-        { name: 'Sunset', value: ['#f9a8d4','#fbbf24'] }, { name: 'Aurora', value: ['#c084fc','#38bdf8'] },
-        { name: 'Midnight', value: ['#0f172a','#3b82f6'] }, { name: 'Neon', value: ['#f43f5e','#06b6d4'] },
-        { name: 'Berry', value: ['#be185d','#9333ea'] }, { name: 'Ocean', value: ['#a5f3fc','#0ea5e9'] },
-        { name: 'Peach', value: ['#ffedd5','#fca5a5'] }, { name: 'Cloud', value: ['#f8fafc','#cbd5e1'] },
-        { name: 'Forest', value: ['#a7f3d0','#059669'] }, { name: 'Velvet', value: ['#701a75','#f43f5e'] },
-        { name: 'Charcoal', value: ['#27272a','#52525b'] }, { name: 'Warm', value: ['#fff7ed','#fbbf24'] }
+        { name: 'Sunset', value: ['#f9a8d4','#fbbf24'] }, { name: 'Aurora', value: ['#c084fc','#38bdf8'] }, { name: 'Midnight', value: ['#0f172a','#3b82f6'] },
+        { name: 'Neon', value: ['#f43f5e','#06b6d4'] }, { name: 'Berry', value: ['#be185d','#9333ea'] }, { name: 'Ocean', value: ['#a5f3fc','#0ea5e9'] },
+        { name: 'Peach', value: ['#ffedd5','#fca5a5'] }, { name: 'Cloud', value: ['#f8fafc','#cbd5e1'] }, { name: 'Forest', value: ['#a7f3d0','#059669'] },
+        { name: 'Velvet', value: ['#701a75','#f43f5e'] }, { name: 'Charcoal', value: ['#27272a','#52525b'] }, { name: 'Warm', value: ['#fff7ed','#fbbf24'] }
       ],
       scenes: [
-        { name: 'Studio', value: 'studio' }, { name: 'Garden', value: 'garden' },
-        { name: 'Cafe', value: 'cafe' }, { name: 'Beach', value: 'beach' },
-        { name: 'City', value: 'city' }, { name: 'Space', value: 'space' },
-        { name: 'Bokeh', value: 'bokeh' }, { name: 'Wood', value: 'wood' },
-        { name: 'Marble', value: 'marble' }, { name: 'Paper', value: 'paper' },
-        { name: 'Clouds', value: 'clouds' }, { name: 'Dark', value: 'dark' }
+        { name: 'Studio', value: 'studio' }, { name: 'Garden', value: 'garden' }, { name: 'Cafe', value: 'cafe' }, { name: 'Beach', value: 'beach' },
+        { name: 'City', value: 'city' }, { name: 'Space', value: 'space' }, { name: 'Bokeh', value: 'bokeh' }, { name: 'Wood', value: 'wood' },
+        { name: 'Marble', value: 'marble' }, { name: 'Paper', value: 'paper' }, { name: 'Clouds', value: 'clouds' }, { name: 'Dark', value: 'dark' }
       ]
     };
 
@@ -722,39 +612,20 @@
         if (selectedBgType === bg.type || (selectedBgValue === bg.value && bg.type !== 'none')) div.classList.add('selected');
         div.dataset.type = bg.type || 'color';
         div.dataset.value = JSON.stringify(bg.value);
-        
-        if (bg.value === null) {
-          div.style.background = `linear-gradient(135deg, #f4f4f5 25%, #e4e4e7 25%, #e4e4e7 50%, #f4f4f5 50%, #f4f4f5 75%, #e4e4e7 75%, #e4e4e7 100%)`;
-          div.style.backgroundSize = '20px 20px';
-        } else if (typeof bg.value === 'string' && bg.value.startsWith('#')) {
-          div.style.background = bg.value;
-        } else if (Array.isArray(bg.value)) {
-          div.style.background = `linear-gradient(135deg, ${bg.value.join(', ')})`;
-        } else {
-          div.style.background = generateSceneBackground(bg.value);
-        }
-        
+        if (bg.value === null) { div.style.background = `linear-gradient(135deg, #f4f4f5 25%, #e4e4e7 25%, #e4e4e7 50%, #f4f4f5 50%, #f4f4f5 75%, #e4e4e7 75%, #e4e4e7 100%)`; div.style.backgroundSize = '20px 20px'; }
+        else if (typeof bg.value === 'string' && bg.value.startsWith('#')) { div.style.background = bg.value; }
+        else if (Array.isArray(bg.value)) { div.style.background = `linear-gradient(135deg, ${bg.value.join(', ')})`; }
+        else { div.style.background = generateSceneBackground(bg.value); }
         const label = document.createElement('span');
-        label.className = 'bg-name';
-        label.textContent = bg.name;
+        label.className = 'bg-name'; label.textContent = bg.name;
         div.appendChild(label);
-        
         div.addEventListener('click', () => selectBackground(bg.type || 'color', bg.value));
         bgGrid.appendChild(div);
       });
     }
 
     function generateSceneBackground(type) {
-      const scenes = {
-        studio: 'linear-gradient(180deg, #f8fafc 0%, #cbd5e1 100%)', garden: 'linear-gradient(180deg, #bbf7d0 0%, #166534 100%)',
-        cafe: 'linear-gradient(135deg, #d4a373 0%, #faedcd 100%)', beach: 'linear-gradient(180deg, #7dd3fc 0%, #fcd34d 60%, #fff 100%)',
-        city: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)', space: 'radial-gradient(circle, #1e1b4b 0%, #000000 100%)',
-        bokeh: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(100,100,100,0.5) 60%, rgba(24,24,27,1) 100%)',
-        wood: 'repeating-linear-gradient(90deg, #78350f 0%, #92400e 5%, #451a03 10%, #78350f 15%)',
-        marble: 'linear-gradient(45deg, #f8fafc 25%, #e2e8f0 25%, #e2e8f0 50%, #f8fafc 50%, #f8fafc 75%, #e2e8f0 75%)',
-        paper: 'linear-gradient(0deg, #f8fafc 0%, #f1f5f9 100%)', clouds: 'linear-gradient(180deg, #1e293b 0%, #94a3b8 50%, #ffffff 100%)',
-        dark: 'linear-gradient(180deg, #27272a 0%, #09090b 100%)'
-      };
+      const scenes = { studio: 'linear-gradient(180deg, #f8fafc 0%, #cbd5e1 100%)', garden: 'linear-gradient(180deg, #bbf7d0 0%, #166534 100%)', cafe: 'linear-gradient(135deg, #d4a373 0%, #faedcd 100%)', beach: 'linear-gradient(180deg, #7dd3fc 0%, #fcd34d 60%, #fff 100%)', city: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)', space: 'radial-gradient(circle, #1e1b4b 0%, #000000 100%)', bokeh: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(100,100,100,0.5) 60%, rgba(24,24,27,1) 100%)', wood: 'repeating-linear-gradient(90deg, #78350f 0%, #92400e 5%, #451a03 10%, #78350f 15%)', marble: 'linear-gradient(45deg, #f8fafc 25%, #e2e8f0 25%, #e2e8f0 50%, #f8fafc 50%, #f8fafc 75%, #e2e8f0 75%)', paper: 'linear-gradient(0deg, #f8fafc 0%, #f1f5f9 100%)', clouds: 'linear-gradient(180deg, #1e293b 0%, #94a3b8 50%, #ffffff 100%)', dark: 'linear-gradient(180deg, #27272a 0%, #09090b 100%)' };
       return scenes[type] || '#e5e7eb';
     }
 
@@ -766,7 +637,6 @@
         const v = JSON.parse(el.dataset.value);
         if ((type === 'none' && v === null) || (JSON.stringify(v) === JSON.stringify(value))) el.classList.add('selected');
       });
-
       if (type === 'none' && !foregroundImage) return;
       renderComposite();
       updateSteps(type === 'none' ? 2 : 3);
@@ -777,33 +647,12 @@
       if (!foregroundImage) return;
       compositeCanvas.width = foregroundImage.naturalWidth;
       compositeCanvas.height = foregroundImage.naturalHeight;
-
       if (selectedBgType !== 'none') {
-        if (typeof selectedBgValue === 'string' && selectedBgValue.startsWith('#')) {
-          ctx.fillStyle = selectedBgValue;
-          ctx.fillRect(0, 0, compositeCanvas.width, compositeCanvas.height);
-        } else if (Array.isArray(selectedBgValue)) {
-          const grad = ctx.createLinearGradient(0, 0, compositeCanvas.width, compositeCanvas.height);
-          grad.addColorStop(0, selectedBgValue[0]);
-          grad.addColorStop(1, selectedBgValue[1]);
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, 0, compositeCanvas.width, compositeCanvas.height);
-        } else {
-          const colors = {
-            studio: ['#f8fafc','#cbd5e1'], garden: ['#bbf7d0','#166534'], cafe: ['#d4a373','#faedcd'],
-            beach: ['#7dd3fc','#fcd34d'], city: ['#1e293b','#475569'], space: ['#1e1b4b','#000000'],
-            bokeh: ['#ffffff','#52525b'], neon: ['#f43f5e','#06b6d4'], clouds: ['#1e293b','#ffffff'],
-            wood: ['#78350f','#92400e'], marble: ['#f8fafc','#e2e8f0'], paper: ['#f8fafc','#f1f5f9'], dark: ['#27272a','#09090b']
-          };
-          const c = colors[selectedBgValue] || ['#ccc','#888'];
-          const grad = ctx.createLinearGradient(0, 0, compositeCanvas.width, compositeCanvas.height);
-          grad.addColorStop(0, c[0]); grad.addColorStop(1, c[1]);
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, 0, compositeCanvas.width, compositeCanvas.height);
-        }
+        if (typeof selectedBgValue === 'string' && selectedBgValue.startsWith('#')) { ctx.fillStyle = selectedBgValue; ctx.fillRect(0, 0, compositeCanvas.width, compositeCanvas.height); }
+        else if (Array.isArray(selectedBgValue)) { const grad = ctx.createLinearGradient(0, 0, compositeCanvas.width, compositeCanvas.height); grad.addColorStop(0, selectedBgValue[0]); grad.addColorStop(1, selectedBgValue[1]); ctx.fillStyle = grad; ctx.fillRect(0, 0, compositeCanvas.width, compositeCanvas.height); }
+        else { const colors = { studio: ['#f8fafc','#cbd5e1'], garden: ['#bbf7d0','#166534'], cafe: ['#d4a373','#faedcd'], beach: ['#7dd3fc','#fcd34d'], city: ['#1e293b','#475569'], space: ['#1e1b4b','#000000'], bokeh: ['#ffffff','#52525b'], neon: ['#f43f5e','#06b6d4'], clouds: ['#1e293b','#ffffff'], wood: ['#78350f','#92400e'], marble: ['#f8fafc','#e2e8f0'], paper: ['#f8fafc','#f1f5f9'], dark: ['#27272a','#09090b'] }; const c = colors[selectedBgValue] || ['#ccc','#888']; const grad = ctx.createLinearGradient(0, 0, compositeCanvas.width, compositeCanvas.height); grad.addColorStop(0, c[0]); grad.addColorStop(1, c[1]); ctx.fillStyle = grad; ctx.fillRect(0, 0, compositeCanvas.width, compositeCanvas.height); }
       }
       ctx.drawImage(foregroundImage, 0, 0, compositeCanvas.width, compositeCanvas.height);
-
       previewImg.classList.add('hidden');
       compositeCanvas.style.display = 'block';
       downloadBtn.disabled = false;
@@ -823,22 +672,12 @@
 
     function resetWorkspace() {
       fileInput.value = '';
-      currentFile = null;
-      foregroundImage = null;
-      selectedBgType = 'none';
-      selectedBgValue = null;
-      previewImg.src = '';
-      previewImg.classList.remove('hidden');
-      compositeCanvas.style.display = 'none';
-      uploadZone.classList.remove('hidden');
-      previewArea.style.display = 'none';
-      processBtn.disabled = true;
-      processBtn.classList.remove('hidden');
-      bgPicker.classList.add('hidden');
-      downloadBtn.disabled = true;
-      resetBtn.style.display = 'none';
-      updateStatus('Ready', 'default');
-      updateSteps(1);
+      currentFile = null; foregroundImage = null; selectedBgType = 'none'; selectedBgValue = null;
+      previewImg.src = ''; previewImg.classList.remove('hidden'); compositeCanvas.style.display = 'none';
+      uploadZone.classList.remove('hidden'); previewArea.style.display = 'none';
+      processBtn.disabled = true; processBtn.classList.remove('hidden'); bgPicker.classList.add('hidden');
+      downloadBtn.disabled = true; resetBtn.style.display = 'none';
+      updateStatus('Ready', 'default'); updateSteps(1);
     }
 
     function updateSteps(current) {
@@ -851,8 +690,7 @@
     }
 
     function updateStatus(text, type) {
-      statusBadge.textContent = text;
-      statusBadge.className = 'status-badge';
+      statusBadge.textContent = text; statusBadge.className = 'status-badge';
       if (type === 'success') statusBadge.classList.add('success');
       if (type === 'error') statusBadge.classList.add('error');
     }
